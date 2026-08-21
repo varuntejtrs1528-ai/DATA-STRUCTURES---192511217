@@ -1,0 +1,79 @@
+#include <stdio.h>
+
+#define MAX 20
+#define INF 99999
+
+int main()
+{
+    int graph[MAX][MAX];
+    int visited[MAX];
+    int n, i, j;
+    int edges = 0;
+    int min, u, v;
+    int totalCost = 0;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the cost adjacency matrix:\n");
+    printf("Enter 99999 for no edge.\n");
+
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    // Initially no vertex is visited
+    for (i = 0; i < n; i++)
+        visited[i] = 0;
+
+    // Start from vertex 0
+    visited[0] = 1;
+
+    printf("\nEdges in Minimum Spanning Tree:\n");
+
+    while (edges < n - 1)
+    {
+        min = INF;
+        u = -1;
+        v = -1;
+
+        // Find the minimum edge connecting
+        // a visited vertex to an unvisited vertex
+        for (i = 0; i < n; i++)
+        {
+            if (visited[i])
+            {
+                for (j = 0; j < n; j++)
+                {
+                    if (!visited[j] &&
+                        graph[i][j] < min)
+                    {
+                        min = graph[i][j];
+                        u = i;
+                        v = j;
+                    }
+                }
+            }
+        }
+
+        if (u == -1)
+        {
+            printf("MST cannot be formed.\n");
+            return 0;
+        }
+
+        printf("%d - %d : %d\n", u, v, min);
+
+        totalCost += min;
+        visited[v] = 1;
+        edges++;
+    }
+
+    printf("\nMinimum Cost = %d\n", totalCost);
+
+    return 0;
+}
